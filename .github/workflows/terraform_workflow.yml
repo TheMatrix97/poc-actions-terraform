@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - '*'
-  pull_request:
+  pull_request_target:
+    types:
+      - opened
     branches:
-      - 'main'
+      - 'master'
 jobs:
   format_check:
     name: Terraform Validation Check
