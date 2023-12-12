@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - '*'
-  pull_request_target:
+  pull_request:
     types:
       - opened
     branches:
@@ -86,7 +86,7 @@ jobs:
           AWS_SESSION_TOKEN:  ${{ secrets.AWS_SESSION_TOKEN }}
       
       - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
