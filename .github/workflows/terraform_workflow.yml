@@ -7,10 +7,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: load backend configuration
-        run: echo -e $BACKEND_CONFIG > backend.conf && cat backend.conf
+      - name: Extract Backend Config
+        run: |
+          echo "BACKEND_CONFIG<<EOF" >> $GITHUB_ENV
+          echo "$BACKEND_CONFIG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
         env:
           BACKEND_CONFIG: ${{ vars.backend_file_contents }}
+
+      - name: load backend configuration
+        run: echo -e ${{ env.GITHUB_ENV }} > backend.conf && cat backend.conf
 
       - uses: hashicorp/setup-terraform@v3
 
