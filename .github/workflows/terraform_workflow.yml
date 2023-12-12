@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: load backend configuration
-        run: echo $BACKEND_CONFIG > backend.conf
+        run: echo -e $BACKEND_CONFIG > backend.conf && cat backend.conf
         env:
           BACKEND_CONFIG: ${{ vars.backend_file_contents }}
 
@@ -20,6 +20,10 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -backend-config=backend.conf
+        env:
+          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN:  ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Terraform Validate
         run: terraform validate -no-color
