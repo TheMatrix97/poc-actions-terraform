@@ -9,14 +9,15 @@ jobs:
 
       - name: Extract Backend Config
         run: |
-          echo "BACKEND_CONFIG<<EOF" >> $GITHUB_ENV
-          echo "$BACKEND_CONFIG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          cat << EOF > backend.conf
+            bucket = "${S3_BUCKET}"
+            key    = "terraform.tfstate"
+            dynamodb_table = "${DYNAMODB_TABLE}"
+            region = "us-east-1"
+          EOF
         env:
-          BACKEND_CONFIG: ${{ vars.backend_file_contents }}
-
-      - name: load backend configuration
-        run: echo -e ${{ env.GITHUB_ENV }} > backend.conf && cat backend.conf
+          S3_BUCKET: ${{ vars.s3_bucket }}
+          DYNAMODB_TABLE:  ${{ vars.dynamodb_table }}
 
       - uses: hashicorp/setup-terraform@v3
 
