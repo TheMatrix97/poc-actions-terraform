@@ -1,4 +1,4 @@
-Name: Github Actions Terraform
+name: Github Actions Terraform
 on: [push]
 jobs:
   format_check:
